@@ -2,22 +2,51 @@ import axios, {AxiosResponse} from "axios";
 
 const app = document.getElementById("app") as HTMLDivElement;
 
-function processarImagemComSucesso(resposta: AxiosResponse){
+//#region exemplo promise sem funções callback
+// function processarImagemComSucesso(resposta: AxiosResponse){
+//   const urlImagem = URL.createObjectURL(resposta.data);
+
+//   const img = document.createElement("img");
+//   img.src = urlImagem;
+
+//   app.appendChild(img);
+// }
+
+// function processarImagemComFalha(resposta: AxiosResponse){
+//   console.log(resposta);
+// }
+// axios.get("https://picsum.photos/200", {responseType: "blob"})
+// .then(processarImagemComSucesso)
+// .catch(processarImagemComFalha);
+//#endregion
+
+//#region async function exemplo: usa os promises, é um pouco mais burocratico, porem é mais facil de visualizar
+async function obterImagem(){
+  try{
+  const resposta = await axios.get("https://picsum.photos/200",{responseType: "blob"});
   const urlImagem = URL.createObjectURL(resposta.data);
 
   const img = document.createElement("img");
   img.src = urlImagem;
 
   app.appendChild(img);
-}
 
-function processarImagemComFalha(resposta: AxiosResponse){
-  console.log(resposta);
+  }catch(err)
+  {
+    console.log(err);
+  }
+  
 }
-axios.get("http://picsum.photos/200", {responseType: "blob"})
-  .then(processarImagemComSucesso)
-  .catch(processarImagemComFalha);
+obterImagem(); 
+//#endregion
 
+//#region callback hell
+  // fetch("http://picsum.photos/200")
+  // .then(resposta => {
+  //   const blob = resposta.blob();
+  //   blob.then()
+  // })
+  //#endregion
 //#region ------>>> Primeiro exemplo de promises
 
 // function executarFuncaoLonga(): string|undefined{
